@@ -1,5 +1,6 @@
 import React from 'react'
 import { Route, Switch, withRouter } from 'react-router-dom'
+import sortBy from 'sort-by'
 import * as BooksAPI from './BooksAPI'
 import MyBooks from './pages/MyBooks'
 import Search from './pages/Search'
@@ -63,7 +64,7 @@ class BooksApp extends React.Component {
         return book
       })
         this.setState({
-          searchedBooks: currentBooks
+          searchedBooks: currentBooks.sort(sortBy('title'))
         })
       }
     )
