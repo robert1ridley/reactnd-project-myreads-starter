@@ -1,7 +1,8 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import Book from '../components/Book';
+import React from 'react'
+import { Link } from 'react-router-dom'
+import PropTypes from 'prop-types'
+import Book from '../components/Book'
+import loader from '../assets/loader/loader.gif'
 
 class Search extends React.Component {
   static propTypes = {
@@ -35,7 +36,10 @@ class Search extends React.Component {
         <div className="search-books-results">
           <ol className="books-grid">
           {
-            this.props.searchedBooks && this.state.searchTerm!== '' &&
+            this.props.loading && <img src={loader} alt="loader" />
+          }
+          {
+            this.props.searchedBooks && this.state.searchTerm!== '' && !this.props.loading &&
             this.props.searchedBooks.map(book => 
               <Book
                 book={book}
@@ -51,11 +55,3 @@ class Search extends React.Component {
   }
 }
 export default Search;
-/*
-  NOTES: The search from BooksAPI is limited to a particular set of search terms.
-  You can find these search terms here:
-  https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
-
-  However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
-  you don't find a specific author or title. Every search is limited by search terms.
-*/

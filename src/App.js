@@ -16,7 +16,8 @@ class BooksApp extends React.Component {
       read: [],
       none: []
     },
-    searchedBooks: []
+    searchedBooks: [],
+    loading: true
   }
 
   updateShelves = () => {
@@ -26,7 +27,8 @@ class BooksApp extends React.Component {
           wantToRead: this.state.books.filter(book => book.shelf === 'wantToRead'),
           read: this.state.books.filter(book => book.shelf === 'read'),
           none: this.state.books.filter(book => book.shelf === 'none')
-        }
+        },
+        loading: false
     })
   }
 
@@ -40,6 +42,7 @@ class BooksApp extends React.Component {
   }
 
   moveBook = (book, shelf) => {
+    this.setState({ loading: true })
     book.shelf = shelf
     BooksAPI.update(book, shelf).then((books) =>
       this.setState({ books: this.state.books.filter(item => item.id !== book.id).concat([book]) })
@@ -53,7 +56,7 @@ class BooksApp extends React.Component {
   }
 
   searchBooks = (book) => {
-    this.setState({ searchedBooks: [] })
+    this.setState({ searchedBooks: [], loading: true })
     BooksAPI.search(book).then((books) => {
       if(!books || books.error) {
         return
@@ -64,7 +67,8 @@ class BooksApp extends React.Component {
         return book
       })
         this.setState({
-          searchedBooks: currentBooks.sort(sortBy('title'))
+          searchedBooks: currentBooks.sort(sortBy('title')),
+          loading: false
         })
       }
     )
@@ -78,6 +82,7 @@ class BooksApp extends React.Component {
             <MyBooks
               shelves={this.state.shelves}
               moveBook={this.moveBook}
+              loading={this.state.loading}
             /> 
           }/>
           <Route
@@ -87,6 +92,7 @@ class BooksApp extends React.Component {
                 searchBooks={this.searchBooks}
                 searchedBooks={this.state.searchedBooks}
                 moveBook={this.moveBook}
+                loading={this.state.loading}
               />
           }/>
           <Route path="*" component={ NotFound } />
