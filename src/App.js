@@ -53,6 +53,9 @@ class BooksApp extends React.Component {
 
   searchBooks = (book) => {
     BooksAPI.search(book).then((books) => {
+      if(!books || books.error) {
+        return
+      }
       const currentBooks = books.map(book => {
         const currentBook = this.state.books.find(b => b.id === book.id)
         book.shelf = currentBook ? currentBook.shelf : 'none'
