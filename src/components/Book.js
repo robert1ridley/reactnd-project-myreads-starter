@@ -21,8 +21,16 @@ const Book = (props) => {
           </div>
         </div>
         <div className="book-title">{props.book.title}</div>
-        {/* <div className="book-authors">{props.book.authors.map(author => `${author} `)}</div> */}
-        <div className="book-authors">{props.book.authors}</div>
+        {
+          props.book.authors &&
+          <div className="book-authors">
+            {
+              props.book.authors.map((author, i) => 
+                <span key={i} style={{display: 'block'}}>{ author }</span>
+              )
+            }
+          </div>
+        }
       </div>
     </li>
   )
