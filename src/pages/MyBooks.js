@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import PropTypes from 'prop-types'
 import Shelf from '../components/Shelf'
 
 const MyBooks = (props) => {
@@ -12,14 +13,17 @@ const MyBooks = (props) => {
         <Shelf
           header="Currently Reading"
           bookshelf={props.shelves.currentlyReading}
+          moveBook={props.moveBook}
         />
         <Shelf
           header="Want to Read"
           bookshelf={props.shelves.wantToRead}
+          moveBook={props.moveBook}
         />
         <Shelf
           header="Read"
           bookshelf={props.shelves.read}
+          moveBook={props.moveBook}
         />
       </div>
       <div className="open-search">
@@ -28,5 +32,9 @@ const MyBooks = (props) => {
     </div>
   )
 }
+
+MyBooks.propTypes = {
+  shelves: PropTypes.object.isRequired
+};
 
 export default MyBooks;

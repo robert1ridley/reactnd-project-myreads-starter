@@ -1,8 +1,9 @@
 import React from 'react'
-import { Route } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 import * as BooksAPI from './BooksAPI'
 import MyBooks from './pages/MyBooks'
 import Search from './pages/Search'
+import NotFound from './pages/NotFound'
 import './App.css'
 
 class BooksApp extends React.Component {
@@ -36,17 +37,37 @@ class BooksApp extends React.Component {
     )
   }
 
+  //TODO: if this approach is acceptable, move the api call and update 
+  //into a function that can be called from both componentDidMount() and moveBook
+  moveBook = (book, shelf) => {
+    console.log('evoked')
+    BooksAPI.update(book, shelf).then((books) =>
+      this.setState({ books })
+    )
+    .then(() => 
+      BooksAPI.getAll().then((books) =>
+      this.setState({ books })
+    )
+    .then(() =>
+      this.updateShelves()
+    )
+    )
+  }
+
   render() {
-    console.log(this.state.shelves)
+    console.log(this.state.books)
     return (
       <div className="app">
-        <Route exact path="/" render={() => 
-          <MyBooks
-            books={this.state.books}
-            shelves={this.state.shelves}
-          /> 
-        }/>
-        <Route path="/search" component={ Search } />
+        <Switch>
+          <Route exact path="/" render={() => 
+            <MyBooks
+              shelves={this.state.shelves}
+              moveBook={this.moveBook}
+            /> 
+          }/>
+          <Route path="/search" component={ Search } />
+          <Route path="*" component={ NotFound } />
+        </Switch>
       </div>
     )
   }
