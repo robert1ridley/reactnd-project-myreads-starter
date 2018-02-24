@@ -41,7 +41,7 @@ class BooksApp extends React.Component {
   moveBook = (book, shelf) => {
     book.shelf = shelf
     BooksAPI.update(book, shelf).then((books) =>
-      this.setState({ books: this.state.books.filter(b => b.id !== book.id).concat([book]) })
+      this.setState({ books: this.state.books.filter(item => item.id !== book.id).concat([book]) })
     )
     .then(() =>
       this.updateShelves()
@@ -52,12 +52,13 @@ class BooksApp extends React.Component {
   }
 
   searchBooks = (book) => {
+    this.setState({ searchedBooks: [] })
     BooksAPI.search(book).then((books) => {
       if(!books || books.error) {
         return
       }
       const currentBooks = books.map(book => {
-        const currentBook = this.state.books.find(b => b.id === book.id)
+        const currentBook = this.state.books.find(item => item.id === book.id)
         book.shelf = currentBook ? currentBook.shelf : 'none'
         return book
       })
@@ -69,7 +70,6 @@ class BooksApp extends React.Component {
   }
 
   render() {
-    console.log(this.state.books)
     return (
       <div className="app">
         <Switch>

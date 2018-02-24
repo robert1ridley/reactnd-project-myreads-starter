@@ -20,7 +20,6 @@ class Search extends React.Component {
   }
 
   render() {
-    console.log (this.props.searchedBooks)
     return (
       <div className="search-books">
         <div className="search-books-bar">
