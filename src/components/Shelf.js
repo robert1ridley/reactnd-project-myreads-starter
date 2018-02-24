@@ -14,7 +14,7 @@ const Shelf = (props) => {
                 book={book}
                 key={book.id}
                 moveBook={props.moveBook}
-              />   
+              />
             )
           }
         </ol>
