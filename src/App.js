@@ -14,7 +14,8 @@ class BooksApp extends React.Component {
       wantToRead: [],
       read: [],
       none: []
-    }
+    },
+    searchedBooks: []
   }
 
   updateShelves = () => {
@@ -46,11 +47,25 @@ class BooksApp extends React.Component {
     )
     .then(() => 
       BooksAPI.getAll().then((books) =>
-      this.setState({ books })
+        this.setState({ books })
+      )
+      .then(() =>
+        this.updateShelves()
+      )
     )
-    .then(() =>
-      this.updateShelves()
-    )
+  }
+
+  searchBooks = (book) => {
+    BooksAPI.search(book).then((books) => {
+      const currentBooks = books.map(book => {
+        const currentBook = this.state.books.find(b => b.id === book.id)
+        book.shelf = currentBook ? currentBook.shelf : 'none'
+        return book
+      })
+        this.setState({
+          searchedBooks: currentBooks
+        })
+      }
     )
   }
 
@@ -65,7 +80,14 @@ class BooksApp extends React.Component {
               moveBook={this.moveBook}
             /> 
           }/>
-          <Route path="/search" component={ Search } />
+          <Route
+            path="/search"
+            render={() =>
+              <Search
+                searchBooks={this.searchBooks}
+                searchedBooks={this.state.searchedBooks}
+              />
+          }/>
           <Route path="*" component={ NotFound } />
         </Switch>
       </div>
