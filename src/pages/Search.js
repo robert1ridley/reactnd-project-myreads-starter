@@ -12,7 +12,7 @@ class Search extends React.Component {
     searchTerm: ''
   }
 
-  onSeach = (e) => {
+  onSearch = (e) => {
     this.setState({
       searchTerm: e.target.value
     })
@@ -29,7 +29,7 @@ class Search extends React.Component {
             <input 
               type="text" 
               placeholder="Search by title or author"
-              onChange={this.onSeach}
+              onChange={this.onSearch}
             />
           </div>
         </div>
